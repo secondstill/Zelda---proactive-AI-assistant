@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Zelda AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .center-outer {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #welcome-message {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .zelda-title {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .zelda-icon {
+            font-size: 0.8em;
+            color: #667eea;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #4a5568;
+            margin: 0 0 40px 0;
+            line-height: 1.5;
+        }
+        
+        #main-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .main-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 25px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .main-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .main-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .motivation-text {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #4a5568;
+            font-style: italic;
+            border-left: 4px solid #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            #welcome-message {
+                padding: 40px 25px;
+            }
+            
+            .aurora-title {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            #main-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="center-outer">
+        <div id="welcome-message">
+            <h1 class="zelda-title">
+                <i class="fas fa-sparkles zelda-icon"></i>
+                Zelda
+            </h1>
+            <h2 class="subtitle">Your intelligent AI assistant for productivity,<br>habits, and life organization.</h2>
+            
+            <div class="motivation-text" id="motivationMessage">
+                Loading inspiration...
+            </div>
+            
+            <div id="main-buttons">
+                <a href="/habits" class="main-btn">
+                    <i class="fas fa-check-circle"></i>
+                    Habit Tracker
+                </a>
+                <a href="/tasks" class="main-btn">
+                    <i class="fas fa-tasks"></i>
+                    Task Management
+                </a>
+                <a href="/chat" class="main-btn">
+                    <i class="fas fa-comments"></i>
+                    AI Chat
+                </a>
+                <a href="/account" class="main-btn">
+                    <i class="fas fa-user-circle"></i>
+                    Account
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load motivational message
+        fetch('/api/motivation')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('motivationMessage').textContent = data.message;
+            })
+            .catch(error => {
+                document.getElementById('motivationMessage').textContent = 
+                    "Welcome back! Ready to make today productive and meaningful? 🌟";
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habits | Zelda Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/habit.css">
+    <link rel="stylesheet" href="/static/voice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* === ELEGANT HABITS PAGE STYLES === */
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .habits-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Section */
+        .habits-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        
+        .home-link {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .home-link:hover {
+            color: #764ba2;
+        }
+        
+        .habits-header h1 {
+            margin: 0;
+            color: #2d3748;
+            font-size: 2.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .motivation-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        /* Add Habit Form */
+        .add-habit-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .add-habit-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .habit-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.3s;
+        }
+        
+        .habit-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .add-habit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .add-habit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Habits Grid */
+        .habits-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0 0 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .habits-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .habit-card {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .habit-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .habit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .habit-name {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .habit-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #718096;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .habit-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #e2e8f0;
+            color: #718096;
+        }
+        
+        .calendar-day.completed {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+        
+        .calendar-day.today {
+            border: 2px solid #667eea;
+        }
+        
+        .calendar-day:hover {
+            transform: scale(1.1);
+        }
+        
+        .habit-stats {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #718096;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+        
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .habits-container {
+                padding: 15px;
+            }
+            
+            .habits-header {
+                padding: 20px;
+            }
+            
+            .home-link {
+                left: 20px;
+            }
+            
+            .habits-header h1 {
+                font-size: 2em;
+            }
+            
+            .add-habit-form {
+                flex-direction: column;
+            }
+            
+            .habit-input {
+                min-width: 100%;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .habit-card {
+            animation: fadeInUp 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="habits-container">
+        <!-- Header -->
+        <div class="habits-header">
+            <a href="/" class="home-link">
+                <i class="fas fa-arrow-left"></i>
+                Home
+            </a>
+            <h1>
+                <i class="fas fa-check-circle" style="color: #48bb78;"></i>
+                Habit Tracker
+            </h1>
+            
+            <div class="motivation-card" id="motivationMessage">
+                Loading daily motivation...
+            </div>
+        </div>
+        
+        <!-- Add Habit Section -->
+        <div class="add-habit-section">
+            <form id="add-habit-form" class="add-habit-form">
+                <input 
+                    id="new-habit-name" 
+                    type="text" 
+                    class="habit-input"
+                    placeholder="Enter a new habit (e.g., 'Read for 30 minutes', 'Exercise daily')" 
+                    required
+                >
+                <button type="submit" class="add-habit-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Habit
+                </button>
+            </form>
+        </div>
+        
+        <!-- Habits Section -->
+        <div class="habits-section">
+            <h2 class="section-title">
+                <i class="fas fa-list-check"></i>
+                Your Habits
+            </h2>
+            <div id="habits-list" class="habits-grid">
+                <!-- Habits will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/habit.js"></script>
+    <script src="/static/voice.js"></script>
+    <script>
+        // Load motivation message
+        fetch('/api/motivation')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('motivationMessage').textContent = data.motivation;
+            })
+            .catch(error => {
+                document.getElementById('motivationMessage').textContent = 
+                    "Every small step counts towards building the life you want! 🌟";
+            });
+    </script>
+</body>
+</html>

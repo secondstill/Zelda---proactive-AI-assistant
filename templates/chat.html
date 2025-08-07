@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat | Zelda AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/voice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* === ELEGANT CHAT PAGE STYLES === */
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Section */
+        .chat-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .home-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .home-link:hover {
+            color: #764ba2;
+        }
+        
+        .chat-header h1 {
+            margin: 0;
+            color: #2d3748;
+            font-size: 1.8em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Chat Messages Container */
+        .chat-messages-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 80%;
+        }
+        
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .user .message-avatar {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+        
+        .zelda .message-avatar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .message-bubble {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px 20px;
+            position: relative;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+        
+        .user .message-bubble {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+        }
+        
+        .zelda .message-bubble {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Input Section */
+        .chat-input-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-input-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.3s;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .send-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+        
+        .welcome-message i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #667eea;
+            opacity: 0.7;
+        }
+        
+        /* Loading Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: #f7fafc;
+            border-radius: 16px;
+            margin-top: 10px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 15px;
+            }
+            
+            .chat-header {
+                padding: 15px 20px;
+            }
+            
+            .chat-header h1 {
+                font-size: 1.5em;
+            }
+            
+            .chat-messages {
+                padding: 20px 15px;
+            }
+            
+            .chat-message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="header-left">
+                <a href="/" class="home-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Home
+                </a>
+                <h1>
+                    <i class="fas fa-comments" style="color: #667eea;"></i>
+                    Chat with Zelda
+                </h1>
+            </div>
+            <div class="voice-controls">
+                <!-- Voice button will be added by voice.js -->
+            </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <i class="fas fa-robot"></i>
+                    <p>Hello! I'm Zelda, your AI assistant. I'll ask you a few questions to help organize your tasks and habits better.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <form class="chat-input-form" id="chatForm">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="chatInput" 
+                    placeholder="Type your message here..." 
+                    autocomplete="off"
+                >
+                <button type="submit" class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/static/voice.js"></script>
+    <script src="/static/common.js"></script>
+    <script>
+        let conversationStarted = false;
+        let questionIndex = 0;
+        let userAnswers = [];
+        
+        const questions = [
+            {
+                text: "What are the top 3 tasks you need to complete this week?",
+                type: "tasks"
+            },
+            {
+                text: "What daily habits would you like to build or improve? (e.g., exercise, reading, meditation)",
+                type: "habits"
+            },
+            {
+                text: "What time of day do you feel most productive for important tasks?",
+                type: "schedule"
+            }
+        ];
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        function addMessage(content, isUser = false, isSystem = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user' : 'zelda'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = content;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>Zelda is typing...</div>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function startConversation() {
+            conversationStarted = true;
+            setTimeout(() => {
+                addMessage("Hi! I'm here to help you organize your life better. Let me ask you a few questions to get started.");
+                setTimeout(() => {
+                    askNextQuestion();
+                }, 1000);
+            }, 500);
+        }
+        
+        function askNextQuestion() {
+            if (questionIndex < questions.length) {
+                const question = questions[questionIndex];
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addMessage(question.text);
+                }, 1500);
+            } else {
+                processAnswersAndUpdateSystem();
+            }
+        }
+        
+        async function processAnswersAndUpdateSystem() {
+            showTypingIndicator();
+            
+            try {
+                // Process tasks
+                const taskAnswers = userAnswers.filter(a => a.type === 'tasks');
+                if (taskAnswers.length > 0) {
+                    const taskText = taskAnswers[0].answer;
+                    const tasks = extractTasksFromText(taskText);
+                    
+                    for (const task of tasks) {
+                        await fetch('/api/tasks', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                title: task,
+                                description: 'Added from chat conversation',
+                                priority: 'medium'
+                            })
+                        });
+                    }
+                }
+                
+                // Process habits
+                const habitAnswers = userAnswers.filter(a => a.type === 'habits');
+                if (habitAnswers.length > 0) {
+                    const habitText = habitAnswers[0].answer;
+                    const habits = extractHabitsFromText(habitText);
+                    
+                    for (const habit of habits) {
+                        await fetch('/api/habits/new', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ habit: habit })
+                        });
+                    }
+                }
+                
+                hideTypingIndicator();
+                addMessage("Perfect! I've added your tasks and habits to the system. You can manage them from the Tasks and Habits pages. Is there anything else you'd like to work on?");
+                
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage("I've noted your responses! You can manually add your tasks and habits from their respective pages.");
+            }
+        }
+        
+        function extractTasksFromText(text) {
+            // Simple extraction - split by common delimiters and clean up
+            const tasks = text.split(/[,;\n]|and\s+/)
+                .map(task => task.trim())
+                .filter(task => task.length > 3 && task.length < 100)
+                .slice(0, 5); // Limit to 5 tasks
+            return tasks;
+        }
+        
+        function extractHabitsFromText(text) {
+            // Simple extraction for habits
+            const habits = text.split(/[,;\n]|and\s+/)
+                .map(habit => habit.trim())
+                .filter(habit => habit.length > 2 && habit.length < 50)
+                .slice(0, 5); // Limit to 5 habits
+            return habits;
+        }
+        
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            chatInput.value = '';
+            
+            if (!conversationStarted) {
+                startConversation();
+                return;
+            }
+            
+            // Store user answer
+            if (questionIndex < questions.length) {
+                userAnswers.push({
+                    question: questions[questionIndex].text,
+                    answer: message,
+                    type: questions[questionIndex].type
+                });
+                questionIndex++;
+                
+                setTimeout(() => {
+                    askNextQuestion();
+                }, 1000);
+            } else {
+                // Regular chat after questions
+                showTypingIndicator();
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: message })
+                    });
+                    const data = await response.json();
+                    
+                    hideTypingIndicator();
+                    addMessage(data.reply);
+                } catch (error) {
+                    hideTypingIndicator();
+                    addMessage("I'm having trouble connecting right now, but I'm here to help when you need me!");
+                }
+            }
+        });
+        
+        // Auto-focus on input
+        chatInput.focus();
+    </script>
+</body>
+</html>

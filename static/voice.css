@@ -1,0 +1,105 @@
+/* Voice Assistant Styles */
+
+.voice-assistant {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+
+.voice-assistant-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #2ecc40;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.voice-assistant-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.voice-assistant-btn.recording {
+    background-color: #ff4d4d;
+    animation: pulse 1.5s infinite;
+}
+
+.voice-status {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #f5f5f5;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.speech-feedback {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 300px;
+    max-height: 0;
+    overflow-y: auto;
+    background-color: rgba(35, 43, 43, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: max-height 0.5s ease;
+    opacity: 0;
+    z-index: 999;
+    padding: 0;
+}
+
+.speech-feedback.active {
+    max-height: 300px;
+    opacity: 1;
+    padding: 15px;
+}
+
+.user-message, .assistant-message {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 85%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #333;
+    color: #fff;
+    margin-left: auto;
+}
+
+.assistant-message {
+    background-color: #2ecc40;
+    color: #fff;
+    margin-right: auto;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+    .speech-feedback {
+        width: 85%;
+        right: 10px;
+        left: 10px;
+        margin: 0 auto;
+    }
+}
