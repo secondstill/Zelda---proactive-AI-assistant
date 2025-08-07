@@ -208,7 +208,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - 🐛 **Bug Reports**: [Create an issue](https://github.com/secondstill/Zelda---proactive-AI-assistant/issues)
 - 💡 **Feature Requests**: [Start a discussion](https://github.com/secondstill/Zelda---proactive-AI-assistant/discussions)
-- 📧 **Contact**: [Your Email](mailto:gauthambalamurali@gmail.com)
+- 📧 **Contact**: [mail](mailto:gauthambalamurali@gmail.com)
 
 ---
 
