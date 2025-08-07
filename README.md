@@ -1,4 +1,4 @@
-# Zelda Habit Tracker (Production Ready)
+# Zelda Habit Tracker 
 
 ## Features
 - Minimalist, responsive UI
